@@ -39,7 +39,7 @@ func main() {
 
 		for _, e := range lines {
 			pieces := strings.Split(e, "💩")
-			fmt.Println("Testing side ", pieces[0], "of day ", day, "with input", pieces[1])
+			fmt.Println("Testing side", pieces[0], "of day", day, "with input", pieces[1])
 			// if test array ever contains newlines, this will have to change
 			pieces_slice := []string{pieces[1]}
 			result := calendar[day+pieces[0]](pieces_slice)
