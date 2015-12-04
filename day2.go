@@ -1,13 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"sort"
 	"strconv"
 	"strings"
 )
 
-func day2sideA(lines []string) error {
+func day2sideA(lines []string) string {
 	count := 0
 	for _, e := range lines {
 		d := splitline(e)
@@ -15,11 +14,10 @@ func day2sideA(lines []string) error {
 		sort.Ints(s)
 		count += 2*s[0] + 2*s[1] + 2*s[2] + s[0]
 	}
-	fmt.Println(count)
-	return nil
+	return strconv.Itoa(count)
 }
 
-func day2sideB(lines []string) error {
+func day2sideB(lines []string) string {
 	count := 0
 	for _, e := range lines {
 		d := splitline(e)
@@ -27,8 +25,7 @@ func day2sideB(lines []string) error {
 		sort.Ints(s)
 		count += d[0]*d[1]*d[2] + s[0]
 	}
-	fmt.Println(count)
-	return nil
+	return strconv.Itoa(count)
 }
 
 func splitline(line string) [3]int {
