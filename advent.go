@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"strings"
@@ -22,27 +23,31 @@ func main() {
 	if test == "Y" {
 		s := []string{"day", day, ".test"}
 		infile := strings.Join(s, "")
-		file, err := os.Open(infile)
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer file.Close()
+		//file, err := os.Open(infile)
+		//if err != nil {
+		//	log.Fatal(err)
+		//}
+		//defer file.Close()
 
-		var lines []string
-		scanner := bufio.NewScanner(file)
-		for scanner.Scan() {
-			lines = append(lines, scanner.Text())
-		}
-		if err := scanner.Err(); err != nil {
-			log.Fatal(err)
-		}
+		//var lines []string
+		//scanner := bufio.NewScanner(file)
+		//for scanner.Scan() {
+		//	lines = append(lines, scanner.Text())
+		//}
+		//if err := scanner.Err(); err != nil {
+		//	log.Fatal(err)
+		//}
+
+		b, _ := ioutil.ReadFile(infile)
+		contents := string(b)
+
+		lines := strings.Split(contents, "ᚼ")
 
 		for _, e := range lines {
-			pieces := strings.Split(e, "💩")
+			pieces := strings.Split(e, "ᛥ")
 			fmt.Println("Testing side", pieces[0], "of day", day, "with input", pieces[1])
-			// if test array ever contains newlines, this will have to change
-			pieces_slice := []string{pieces[1]}
-			result := calendar[day+pieces[0]](pieces_slice)
+			split_by_newline := strings.Split(pieces[1], "\r\n")
+			result := calendar[day+pieces[0]](split_by_newline)
 			if pieces[2] == result {
 				fmt.Println(".")
 			} else {
@@ -82,4 +87,10 @@ var calendar = map[string]func([]string) string{
 	"3B": day3sideB,
 	"4A": day4sideA,
 	"4B": day4sideB,
+	"5A": day5sideA,
+	"5B": day5sideB,
+	"6A": day6sideA,
+	"6B": day6sideB,
+	"7A": day7sideA,
+	"7B": day7sideB,
 }
