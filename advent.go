@@ -23,20 +23,6 @@ func main() {
 	if test == "Y" {
 		s := []string{"day", day, ".test"}
 		infile := strings.Join(s, "")
-		//file, err := os.Open(infile)
-		//if err != nil {
-		//	log.Fatal(err)
-		//}
-		//defer file.Close()
-
-		//var lines []string
-		//scanner := bufio.NewScanner(file)
-		//for scanner.Scan() {
-		//	lines = append(lines, scanner.Text())
-		//}
-		//if err := scanner.Err(); err != nil {
-		//	log.Fatal(err)
-		//}
 
 		b, _ := ioutil.ReadFile(infile)
 		contents := string(b)
@@ -93,4 +79,6 @@ var calendar = map[string]func([]string) string{
 	"6B": day6sideB,
 	"7A": day7sideA,
 	"7B": day7sideB,
+	"8A": day8sideA,
+	"8B": day8sideB,
 }
