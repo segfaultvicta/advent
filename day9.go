@@ -26,10 +26,23 @@ func makePath(nodes map[string]Node, from string, to string, dist int) {
 	}
 }
 
-func (n *Node) bestPath(remaining map[string]Node, shortest bool) (distance int, path string) {
+func (n Node) bestPath(remaining map[string]Node, shortest bool) (distance int, path string) {
 	// what the actual balls is happening here?
-	if len(remaining) == 1 {
-		for _, remainingNode := range remaining {
+	//scan := bufio.NewReader(os.Stdin)
+	//scan.ReadString('\n')
+	newRemaining := cut(n.Name, remaining)
+	//indent := strings.Repeat("   ", 7-len(newRemaining))
+	//fmt.Println(indent, ">>>>>>>>>>>>>>>>>>>>>>>>>> finding best path starting at", n.Name)
+	//children := ""
+	//for _, tmp := range newRemaining {
+	//	children += " " + tmp.Name
+	//}
+
+	//fmt.Println(indent, len(newRemaining), "children at this node", children)
+
+	if len(newRemaining) == 1 {
+		for _, remainingNode := range newRemaining {
+			//fmt.Println(indent, "base case returning", n.Paths[remainingNode.Name], n.Name+" -> "+remainingNode.Name)
 			return n.Paths[remainingNode.Name], n.Name + " -> " + remainingNode.Name
 		}
 	}
@@ -44,24 +57,27 @@ func (n *Node) bestPath(remaining map[string]Node, shortest bool) (distance int,
 	var bestPath string
 	var bestNodeName string
 
-	newRemaining := cut(n.Name, remaining)
-
 	for _, node := range newRemaining {
+		//fmt.Println(indent, "about to call bestPath on", node.Name, "current known best is", best, bestPath, "(", bestNodeName, ")")
 		d, p := node.bestPath(newRemaining, shortest)
+		//fmt.Println(indent, "in", n.Name, "just returned (", d, ",", p, ") from", node.Name)
 		if shortest {
 			if d < best {
+				//fmt.Println(indent, "found a new best!")
 				best = d
 				bestPath = p
 				bestNodeName = node.Name
 			}
 		} else {
 			if d > best {
+				//fmt.Println(indent, "found a new best!")
 				best = d
 				bestPath = p
 				bestNodeName = node.Name
 			}
 		}
 	}
+	//fmt.Println(indent, "<<<<<<<<<<<<<<<<<<<<<<<<<< inductive case returning", n.Paths[bestNodeName]+best, n.Name+" -> "+bestPath)
 	return n.Paths[bestNodeName] + best, n.Name + " -> " + bestPath
 }
 
@@ -78,7 +94,11 @@ func day9sideA(lines []string) string {
 		makePath(nodes, to, from, dist)
 	}
 
-	var shortestPaths []int
+	remaining := cut(nodes["Snowdin"].Name, nodes)
+	d, p := nodes["Snowdin"].bestPath(remaining, true)
+	fmt.Println(d, p)
+
+	/*var shortestPaths []int
 
 	for name := range nodes {
 		node := nodes[name]
@@ -88,7 +108,8 @@ func day9sideA(lines []string) string {
 		shortestPaths = append(shortestPaths, distance)
 	}
 	sort.Ints(shortestPaths)
-	return strconv.Itoa(shortestPaths[0])
+	return strconv.Itoa(shortestPaths[0])*/
+	return "whyyyyyyyyy"
 }
 
 func cut(nodeName string, nodes map[string]Node) map[string]Node {
