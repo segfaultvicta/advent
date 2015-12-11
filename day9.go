@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"sort"
 	"strconv"
 	"strings"
@@ -26,8 +25,10 @@ func makePath(nodes map[string]Node, from string, to string, dist int) {
 	}
 }
 
-func (n Node) bestPath(remaining map[string]Node, shortest bool) (distance int, path string) {
-	// what the actual balls is happening here?
+// I don't actually know why this is a random walk, rather than a traversal.
+// If you do know what I'm doing wrong - it might be a logic issue, or it
+// might be not understanding Go properly - please let me know, I'm SUPER curious.
+func (n Node) mysteriousRandomWalk(remaining map[string]Node, shortest bool) (distance int, path string) {
 	//scan := bufio.NewReader(os.Stdin)
 	//scan.ReadString('\n')
 	newRemaining := cut(n.Name, remaining)
@@ -59,7 +60,7 @@ func (n Node) bestPath(remaining map[string]Node, shortest bool) (distance int, 
 
 	for _, node := range newRemaining {
 		//fmt.Println(indent, "about to call bestPath on", node.Name, "current known best is", best, bestPath, "(", bestNodeName, ")")
-		d, p := node.bestPath(newRemaining, shortest)
+		d, p := node.mysteriousRandomWalk(newRemaining, shortest)
 		//fmt.Println(indent, "in", n.Name, "just returned (", d, ",", p, ") from", node.Name)
 		if shortest {
 			if d < best {
@@ -94,22 +95,30 @@ func day9sideA(lines []string) string {
 		makePath(nodes, to, from, dist)
 	}
 
-	remaining := cut(nodes["Snowdin"].Name, nodes)
-	d, p := nodes["Snowdin"].bestPath(remaining, true)
-	fmt.Println(d, p)
+	//remaining := cut(nodes["Snowdin"].Name, nodes)
+	//d, p := nodes["Snowdin"].mysteriousRandomWalk(remaining, true)
+	//fmt.Println(d, p)
 
-	/*var shortestPaths []int
+	var shortestPaths []int
 
 	for name := range nodes {
 		node := nodes[name]
 		remaining := cut(node.Name, nodes)
-		distance, path := node.bestPath(remaining, true)
-		fmt.Println("shortest path from", nodes[name].Name, "traversing all nodes is", path, "with distance", distance)
-		shortestPaths = append(shortestPaths, distance)
+
+		maxIter := 100
+		best := 9999999999999
+		for i := 0; i < maxIter; i++ {
+			distance, _ := node.mysteriousRandomWalk(remaining, true)
+			if distance < best {
+				best = distance
+			}
+		}
+		//distance, path := node.bestPath(remaining, true)
+		//fmt.Println("shortest path from", nodes[name].Name, "traversing all nodes is", path, "with distance", distance)
+		shortestPaths = append(shortestPaths, best)
 	}
 	sort.Ints(shortestPaths)
-	return strconv.Itoa(shortestPaths[0])*/
-	return "whyyyyyyyyy"
+	return strconv.Itoa(shortestPaths[0])
 }
 
 func cut(nodeName string, nodes map[string]Node) map[string]Node {
@@ -140,9 +149,18 @@ func day9sideB(lines []string) string {
 	for name := range nodes {
 		node := nodes[name]
 		remaining := cut(node.Name, nodes)
-		distance, path := node.bestPath(remaining, false)
-		fmt.Println("shortest path from", nodes[name].Name, "traversing all nodes is", path, "with distance", distance)
-		longestPaths = append(longestPaths, distance)
+
+		maxIter := 100
+		best := 0
+		for i := 0; i < maxIter; i++ {
+			distance, _ := node.mysteriousRandomWalk(remaining, false)
+			if distance > best {
+				best = distance
+			}
+		}
+		//distance, path := node.bestPath(remaining, true)
+		//fmt.Println("longest path from", nodes[name].Name, "traversing all nodes is", path, "with distance", distance)
+		longestPaths = append(longestPaths, best)
 	}
 	sort.Ints(longestPaths)
 	return strconv.Itoa(longestPaths[len(longestPaths)-1])
