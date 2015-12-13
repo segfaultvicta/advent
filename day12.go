@@ -5,47 +5,30 @@ import (
 	"strconv"
 )
 
-type JsonObject map[string]interface{}
-
-func parseForIntegers(thing interface{}, filter string) (int, bool) {
-	sum := 0
-
-	switch thing.(type) {
+func parseForIntegers(thing interface{}, filter string) (output int) {
+outer:
+	switch v := thing.(type) {
 	case map[string]interface{}:
 		// object case
-		jsonObject := thing.(map[string]interface{})
-		latch := false
-		for _, child := range jsonObject {
-			res, filtered := parseForIntegers(child, filter)
-			if filtered {
-				latch = true
-				sum = 0
+		for _, child := range v {
+			if child == filter {
+				break outer
 			}
-			if !filtered && !latch {
-				sum += res
-			}
+		}
+		for _, child := range v {
+			output += parseForIntegers(child, filter)
 		}
 	case []interface{}:
 		// array case
-		array := thing.([]interface{})
-		for _, child := range array {
-			res, _ := parseForIntegers(child, filter)
-			sum += res
-		}
-	case string:
-		node := thing.(string)
-		if len(filter) > 0 && node == filter {
-			return 0, true
-		} else {
-			return 0, false
+		for _, child := range v {
+			output += parseForIntegers(child, filter)
 		}
 	case float64:
-		node := thing.(float64)
-		sum = int(node)
+		output = int(v)
 	default:
-		return 0, false
+		return 0
 	}
-	return sum, false
+	return output
 }
 
 func day12sideA(lines []string) string {
@@ -61,8 +44,7 @@ func day12sideA(lines []string) string {
 	var unparsed interface{}
 	json.Unmarshal(bytes, &unparsed)
 
-	sum, _ := parseForIntegers(unparsed, "")
-	return strconv.Itoa(sum)
+	return strconv.Itoa(parseForIntegers(unparsed, ""))
 }
 
 func day12sideB(lines []string) string {
@@ -78,6 +60,5 @@ func day12sideB(lines []string) string {
 	var unparsed interface{}
 	json.Unmarshal(bytes, &unparsed)
 
-	sum, _ := parseForIntegers(unparsed, "red")
-	return strconv.Itoa(sum)
+	return strconv.Itoa(parseForIntegers(unparsed, "red"))
 }
