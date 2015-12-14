@@ -89,4 +89,6 @@ var calendar = map[string]func([]string) string{
 	"12B": day12sideB,
 	"13A": day13sideA,
 	"13B": day13sideB,
+	"14A": day14sideA,
+	"14B": day14sideB,
 }
