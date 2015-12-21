@@ -1,0 +1,40 @@
+C {
+	CaCaCaSi { BPTiMg } 
+	Si 
+	{ 
+		Si { Mg } Si { CaF } 
+		TiTiBSiThF . CaF 
+	} 
+	CaCaSiThCaPBSiThSiThCaCaPTi { PBSiTh { F } } 
+	CaCaSiThCaSiThSi { Mg } 
+	CaPTiBP { F } 
+	SiThCaSi { F } 
+	BCaSi { CaP { F } PMg . CaF } 
+	CaPTiTiTiBPBSiThCaPTiBPBSi { F } 
+	BPBSi { CaF } 
+	BP 
+	{ 
+		Si { F } { Si { BF } CaF } 
+		CaCaCaSiThSiThCaCaPBPTiTi { F } 
+		CaPTiBSiAl
+	} 
+	PBCaCaCaCaCaSi { Mg }
+	CaSiThF 
+} 
+ThCaSiThCaSi { CaF . CaSi { F . F } F } 
+CaSi { F . F } 
+CaSi { BPMg } 
+SiThP { F } 
+CaSi { F } 
+Ti 
+{ 
+	Si { F . F } 
+	CaSi { BF } 
+	CaSi { TiMg } 
+	SiThCaSiThCaF 
+} 
+P { F } 
+Si { F } 
+TiTiTiTiBCaCaSi { CaCaF . F } 
+SiThCaPTiBPTiBCaSiThSi { Mg } 
+CaF
