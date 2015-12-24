@@ -12,14 +12,14 @@ type Item struct {
 	Armor  int
 }
 
-type Player struct {
+type Day21Player struct {
 	HP    int
 	ATK   int
 	ARM   int
 	Items []Item
 }
 
-func (p *Player) RealATK() (out int) {
+func (p *Day21Player) RealATK() (out int) {
 	out += p.ATK
 	for _, i := range p.Items {
 		out += i.Damage
@@ -27,7 +27,7 @@ func (p *Player) RealATK() (out int) {
 	return out
 }
 
-func (p *Player) RealARM() (out int) {
+func (p *Day21Player) RealARM() (out int) {
 	out += p.ARM
 	for _, i := range p.Items {
 		out += i.Armor
@@ -35,13 +35,13 @@ func (p *Player) RealARM() (out int) {
 	return out
 }
 
-type Boss struct {
+type Day21Boss struct {
 	HP  int
 	ATK int
 	ARM int
 }
 
-func Fight(p Player, b Boss) bool {
+func Day21Fight(p Day21Player, b Day21Boss) bool {
 	//fmt.Println(p)
 	//fmt.Printf("player's real atk %d and real def %d, boss atk %d and def %d\n", p.RealATK(), p.RealARM(), b.ATK, b.ARM)
 	for p.HP > 0 && b.HP > 0 {
@@ -64,8 +64,8 @@ func Fight(p Player, b Boss) bool {
 }
 
 func day21sideA(lines []string) string {
-	player := Player{HP: 100, ATK: 0, ARM: 0}
-	boss := Boss{HP: 104, ATK: 8, ARM: 1}
+	player := Day21Player{HP: 100, ATK: 0, ARM: 0}
+	boss := Day21Boss{HP: 104, ATK: 8, ARM: 1}
 
 	weaponOptions := []Item{}
 	weaponOptions = append(weaponOptions, Item{Name: "Dagger", Cost: 8, Damage: 4, Armor: 0})
@@ -117,7 +117,7 @@ func day21sideA(lines []string) string {
 				player.Items = append(player.Items, weapon)
 				player.Items = append(player.Items, armor)
 
-				if Fight(player, boss) {
+				if Day21Fight(player, boss) {
 					cost := ring.Cost + weapon.Cost + armor.Cost
 					if cost < best {
 						best = cost
@@ -134,8 +134,8 @@ func day21sideA(lines []string) string {
 }
 
 func day21sideB(lines []string) string {
-	player := Player{HP: 100, ATK: 0, ARM: 0}
-	boss := Boss{HP: 104, ATK: 8, ARM: 1}
+	player := Day21Player{HP: 100, ATK: 0, ARM: 0}
+	boss := Day21Boss{HP: 104, ATK: 8, ARM: 1}
 
 	weaponOptions := []Item{}
 	weaponOptions = append(weaponOptions, Item{Name: "Dagger", Cost: 8, Damage: 4, Armor: 0})
@@ -187,7 +187,7 @@ func day21sideB(lines []string) string {
 				player.Items = append(player.Items, weapon)
 				player.Items = append(player.Items, armor)
 
-				if !Fight(player, boss) {
+				if !Day21Fight(player, boss) {
 					cost := ring.Cost + weapon.Cost + armor.Cost
 					if cost > worst {
 						worst = cost
