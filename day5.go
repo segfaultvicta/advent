@@ -13,7 +13,7 @@ func day5sideA(lines []string) string {
 		double := doubledLetter(line)
 		snowflake, _ := regexp.MatchString("ab|cd|pq|xy", line)
 		if vowel && double && !snowflake {
-			nicecount += 1
+			nicecount++
 		}
 	}
 	return strconv.Itoa(nicecount)
@@ -53,7 +53,7 @@ func day5sideB(lines []string) string {
 		suck := suckit(line)
 		sand := sandwich(line)
 		if suck && sand {
-			nicecount += 1
+			nicecount++
 		}
 	}
 	return strconv.Itoa(nicecount)

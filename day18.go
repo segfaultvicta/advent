@@ -5,14 +5,14 @@ import (
 	"strconv"
 )
 
-const XSize = 100
-const YSize = 100
-const XRange = XSize - 1
-const YRange = YSize - 1
-const XPenult = XRange - 1
-const YPenult = YRange - 1
+const xSize = 100
+const ySize = 100
+const xRange = xSize - 1
+const yRange = ySize - 1
+const xPenult = xRange - 1
+const yPenult = yRange - 1
 
-func PrintGame(game [YSize][XSize]bool) {
+func printGame(game [ySize][xSize]bool) {
 	ret := ""
 	for _, row := range game {
 		str := ""
@@ -29,7 +29,7 @@ func PrintGame(game [YSize][XSize]bool) {
 	fmt.Println(ret)
 }
 
-func CountOn(neighbors []bool) (ret int) {
+func countOn(neighbors []bool) (ret int) {
 	for _, neighbor := range neighbors {
 		if neighbor {
 			ret++
@@ -41,7 +41,7 @@ func CountOn(neighbors []bool) (ret int) {
 	return ret
 }
 
-func Count(game [YSize][XSize]bool) (ret int) {
+func count(game [ySize][xSize]bool) (ret int) {
 	for _, row := range game {
 		for _, cell := range row {
 			if cell {
@@ -52,14 +52,14 @@ func Count(game [YSize][XSize]bool) (ret int) {
 	return ret
 }
 
-func Evolve(game [YSize][XSize]bool) [YSize][XSize]bool {
-	var ret [YSize][XSize]bool
-	for y := 0; y < YSize; y++ {
-		for x := 0; x < XSize; x++ {
+func evolve(game [ySize][xSize]bool) [ySize][xSize]bool {
+	var ret [ySize][xSize]bool
+	for y := 0; y < ySize; y++ {
+		for x := 0; x < xSize; x++ {
 			// how many neighbors of the current cell are active?
 			var neighbors []bool
 			jam := false
-			if y == 0 || x == 0 || y == YRange || x == XRange {
+			if y == 0 || x == 0 || y == yRange || x == xRange {
 				//we're on one of the edges and have to be careful
 				switch {
 				case y == 0 && x == 0:
@@ -68,23 +68,23 @@ func Evolve(game [YSize][XSize]bool) [YSize][XSize]bool {
 					neighbors = append(neighbors, game[1][1])
 					neighbors = append(neighbors, game[1][0])
 					jam = true
-				case y == 0 && x == XRange:
+				case y == 0 && x == xRange:
 					// upper right hand corner
-					neighbors = append(neighbors, game[0][XPenult])
-					neighbors = append(neighbors, game[1][XPenult])
-					neighbors = append(neighbors, game[1][XRange])
+					neighbors = append(neighbors, game[0][xPenult])
+					neighbors = append(neighbors, game[1][xPenult])
+					neighbors = append(neighbors, game[1][xRange])
 					jam = true
-				case y == YRange && x == 0:
+				case y == yRange && x == 0:
 					// lower left hand corner
-					neighbors = append(neighbors, game[YPenult][0])
-					neighbors = append(neighbors, game[YPenult][1])
-					neighbors = append(neighbors, game[YRange][1])
+					neighbors = append(neighbors, game[yPenult][0])
+					neighbors = append(neighbors, game[yPenult][1])
+					neighbors = append(neighbors, game[yRange][1])
 					jam = true
-				case y == YRange && x == XRange:
+				case y == yRange && x == xRange:
 					// lower right hand corner
-					neighbors = append(neighbors, game[YPenult][XRange])
-					neighbors = append(neighbors, game[YPenult][XPenult])
-					neighbors = append(neighbors, game[YRange][XPenult])
+					neighbors = append(neighbors, game[yPenult][xRange])
+					neighbors = append(neighbors, game[yPenult][xPenult])
+					neighbors = append(neighbors, game[yRange][xPenult])
 					jam = true
 				case y == 0:
 					// upper edge
@@ -93,13 +93,13 @@ func Evolve(game [YSize][XSize]bool) [YSize][XSize]bool {
 					neighbors = append(neighbors, game[1][x-1])
 					neighbors = append(neighbors, game[1][x])
 					neighbors = append(neighbors, game[1][x+1])
-				case y == YRange:
+				case y == yRange:
 					// lower edge
-					neighbors = append(neighbors, game[YRange][x-1])
-					neighbors = append(neighbors, game[YRange][x+1])
-					neighbors = append(neighbors, game[YPenult][x-1])
-					neighbors = append(neighbors, game[YPenult][x])
-					neighbors = append(neighbors, game[YPenult][x+1])
+					neighbors = append(neighbors, game[yRange][x-1])
+					neighbors = append(neighbors, game[yRange][x+1])
+					neighbors = append(neighbors, game[yPenult][x-1])
+					neighbors = append(neighbors, game[yPenult][x])
+					neighbors = append(neighbors, game[yPenult][x+1])
 				case x == 0:
 					// left edge
 					neighbors = append(neighbors, game[y+1][0])
@@ -107,13 +107,13 @@ func Evolve(game [YSize][XSize]bool) [YSize][XSize]bool {
 					neighbors = append(neighbors, game[y+1][1])
 					neighbors = append(neighbors, game[y][1])
 					neighbors = append(neighbors, game[y-1][1])
-				case x == XRange:
+				case x == xRange:
 					// right edge
-					neighbors = append(neighbors, game[y+1][XRange])
-					neighbors = append(neighbors, game[y-1][XRange])
-					neighbors = append(neighbors, game[y+1][XPenult])
-					neighbors = append(neighbors, game[y][XPenult])
-					neighbors = append(neighbors, game[y-1][XPenult])
+					neighbors = append(neighbors, game[y+1][xRange])
+					neighbors = append(neighbors, game[y-1][xRange])
+					neighbors = append(neighbors, game[y+1][xPenult])
+					neighbors = append(neighbors, game[y][xPenult])
+					neighbors = append(neighbors, game[y-1][xPenult])
 				}
 			} else {
 				//we're inside and can be less careful
@@ -126,7 +126,7 @@ func Evolve(game [YSize][XSize]bool) [YSize][XSize]bool {
 				neighbors = append(neighbors, game[y+1][x])
 				neighbors = append(neighbors, game[y+1][x+1])
 			}
-			environment := CountOn(neighbors)
+			environment := countOn(neighbors)
 			if game[y][x] {
 				//fmt.Println("eep", environment)
 				if environment == 2 || environment == 3 || jam {
@@ -150,7 +150,7 @@ func Evolve(game [YSize][XSize]bool) [YSize][XSize]bool {
 }
 
 func day18sideA(lines []string) string {
-	var game [YSize][XSize]bool
+	var game [ySize][xSize]bool
 
 	for y, line := range lines {
 		for x, char := range line {
@@ -162,14 +162,14 @@ func day18sideA(lines []string) string {
 		}
 	}
 
-	PrintGame(game)
+	printGame(game)
 
 	for i := 0; i < 100; i++ {
-		game = Evolve(game)
-		PrintGame(game)
+		game = evolve(game)
+		printGame(game)
 	}
 
-	return strconv.Itoa(Count(game))
+	return strconv.Itoa(count(game))
 }
 
 func day18sideB(lines []string) string {

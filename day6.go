@@ -11,39 +11,39 @@ func day6sideA(lines []string) string {
 		split := strings.Split(line, " ")
 
 		if split[0] == "toggle" {
-			a_strs := strings.Split(split[1], ",")
-			b_strs := strings.Split(split[3], ",")
-			a_x, _ := strconv.Atoi(a_strs[0])
-			a_y, _ := strconv.Atoi(a_strs[1])
-			b_x, _ := strconv.Atoi(b_strs[0])
-			b_y, _ := strconv.Atoi(b_strs[1])
-			for i := a_x; i <= b_x; i++ {
-				for j := a_y; j <= b_y; j++ {
+			aStrs := strings.Split(split[1], ",")
+			bStrs := strings.Split(split[3], ",")
+			aX, _ := strconv.Atoi(aStrs[0])
+			aY, _ := strconv.Atoi(aStrs[1])
+			bX, _ := strconv.Atoi(bStrs[0])
+			bY, _ := strconv.Atoi(bStrs[1])
+			for i := aX; i <= bX; i++ {
+				for j := aY; j <= bY; j++ {
 					lights[j*1000+i] = !lights[j*1000+i]
 				}
 			}
 
 		} else if split[1] == "on" {
-			a_strs := strings.Split(split[2], ",")
-			b_strs := strings.Split(split[4], ",")
-			a_x, _ := strconv.Atoi(a_strs[0])
-			a_y, _ := strconv.Atoi(a_strs[1])
-			b_x, _ := strconv.Atoi(b_strs[0])
-			b_y, _ := strconv.Atoi(b_strs[1])
-			for i := a_x; i <= b_x; i++ {
-				for j := a_y; j <= b_y; j++ {
+			aStrs := strings.Split(split[2], ",")
+			bStrs := strings.Split(split[4], ",")
+			aX, _ := strconv.Atoi(aStrs[0])
+			aY, _ := strconv.Atoi(aStrs[1])
+			bX, _ := strconv.Atoi(bStrs[0])
+			bY, _ := strconv.Atoi(bStrs[1])
+			for i := aX; i <= bX; i++ {
+				for j := aY; j <= bY; j++ {
 					lights[j*1000+i] = true
 				}
 			}
 		} else {
-			a_strs := strings.Split(split[2], ",")
-			b_strs := strings.Split(split[4], ",")
-			a_x, _ := strconv.Atoi(a_strs[0])
-			a_y, _ := strconv.Atoi(a_strs[1])
-			b_x, _ := strconv.Atoi(b_strs[0])
-			b_y, _ := strconv.Atoi(b_strs[1])
-			for i := a_x; i <= b_x; i++ {
-				for j := a_y; j <= b_y; j++ {
+			aStrs := strings.Split(split[2], ",")
+			bStrs := strings.Split(split[4], ",")
+			aX, _ := strconv.Atoi(aStrs[0])
+			aY, _ := strconv.Atoi(aStrs[1])
+			bX, _ := strconv.Atoi(bStrs[0])
+			bY, _ := strconv.Atoi(bStrs[1])
+			for i := aX; i <= bX; i++ {
+				for j := aY; j <= bY; j++ {
 					lights[j*1000+i] = false
 				}
 			}
@@ -52,7 +52,7 @@ func day6sideA(lines []string) string {
 	count := 0
 	for i := 0; i < 1000000; i++ {
 		if lights[i] == true {
-			count += 1
+			count++
 		}
 	}
 	return strconv.Itoa(count)
@@ -64,39 +64,39 @@ func day6sideB(lines []string) string {
 		split := strings.Split(line, " ")
 
 		if split[0] == "toggle" {
-			a_strs := strings.Split(split[1], ",")
-			b_strs := strings.Split(split[3], ",")
-			a_x, _ := strconv.Atoi(a_strs[0])
-			a_y, _ := strconv.Atoi(a_strs[1])
-			b_x, _ := strconv.Atoi(b_strs[0])
-			b_y, _ := strconv.Atoi(b_strs[1])
-			for i := a_x; i <= b_x; i++ {
-				for j := a_y; j <= b_y; j++ {
+			aStrs := strings.Split(split[1], ",")
+			bStrs := strings.Split(split[3], ",")
+			aX, _ := strconv.Atoi(aStrs[0])
+			aY, _ := strconv.Atoi(aStrs[1])
+			bX, _ := strconv.Atoi(bStrs[0])
+			bY, _ := strconv.Atoi(bStrs[1])
+			for i := aX; i <= bX; i++ {
+				for j := aY; j <= bY; j++ {
 					lights[j*1000+i] = lights[j*1000+i] + 2
 				}
 			}
 
 		} else if split[1] == "on" {
-			a_strs := strings.Split(split[2], ",")
-			b_strs := strings.Split(split[4], ",")
-			a_x, _ := strconv.Atoi(a_strs[0])
-			a_y, _ := strconv.Atoi(a_strs[1])
-			b_x, _ := strconv.Atoi(b_strs[0])
-			b_y, _ := strconv.Atoi(b_strs[1])
-			for i := a_x; i <= b_x; i++ {
-				for j := a_y; j <= b_y; j++ {
+			aStrs := strings.Split(split[2], ",")
+			bStrs := strings.Split(split[4], ",")
+			aX, _ := strconv.Atoi(aStrs[0])
+			aY, _ := strconv.Atoi(aStrs[1])
+			bX, _ := strconv.Atoi(bStrs[0])
+			bY, _ := strconv.Atoi(bStrs[1])
+			for i := aX; i <= bX; i++ {
+				for j := aY; j <= bY; j++ {
 					lights[j*1000+i] = lights[j*1000+i] + 1
 				}
 			}
 		} else {
-			a_strs := strings.Split(split[2], ",")
-			b_strs := strings.Split(split[4], ",")
-			a_x, _ := strconv.Atoi(a_strs[0])
-			a_y, _ := strconv.Atoi(a_strs[1])
-			b_x, _ := strconv.Atoi(b_strs[0])
-			b_y, _ := strconv.Atoi(b_strs[1])
-			for i := a_x; i <= b_x; i++ {
-				for j := a_y; j <= b_y; j++ {
+			aStrs := strings.Split(split[2], ",")
+			bStrs := strings.Split(split[4], ",")
+			aX, _ := strconv.Atoi(aStrs[0])
+			aY, _ := strconv.Atoi(aStrs[1])
+			bX, _ := strconv.Atoi(bStrs[0])
+			bY, _ := strconv.Atoi(bStrs[1])
+			for i := aX; i <= bX; i++ {
+				for j := aY; j <= bY; j++ {
 					lights[j*1000+i] = lights[j*1000+i] - 1
 					if lights[j*1000+i] < 0 {
 						lights[j*1000+i] = 0
@@ -105,7 +105,7 @@ func day6sideB(lines []string) string {
 			}
 		}
 	}
-	var count int = 0
+	var count int
 	for i := 0; i < 1000000; i++ {
 		count += lights[i]
 	}

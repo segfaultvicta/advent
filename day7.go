@@ -15,20 +15,20 @@ func resolve(a string, wires map[string]uint16) (n uint16, err error) {
 	if a == "b" {
 		return 16076, nil
 	}
-	n_conv, n_err := strconv.Atoi(a)
-	n_found := false
+	nConv, nErr := strconv.Atoi(a)
+	nFound := false
 	i, ok := wires[a]
 	if (i >= 0) && ok {
 		n = wires[a]
-		n_found = true
+		nFound = true
 	} else {
-		if n_err == nil {
-			n = uint16(n_conv)
-			n_found = true
+		if nErr == nil {
+			n = uint16(nConv)
+			nFound = true
 		}
 	}
 
-	if n_found == false {
+	if nFound == false {
 		err = errors.New(a + " does not resolve")
 	} else {
 		err = nil
@@ -56,87 +56,83 @@ func day7sideA(lines []string) string {
 		switch r["op"] {
 		case "AND":
 			fn = func(wires map[string]uint16) bool {
-				_, o_err := resolve(r["out"], wires)
-				if o_err == nil {
+				_, oErr := resolve(r["out"], wires)
+				if oErr == nil {
 					return false
 				}
-				p, p_err := resolve(r["a"], wires)
-				q, q_err := resolve(r["b"], wires)
-				if p_err == nil && q_err == nil {
+				p, pErr := resolve(r["a"], wires)
+				q, qErr := resolve(r["b"], wires)
+				if pErr == nil && qErr == nil {
 					res := p & q
 					wires[r["out"]] = res
 					return true
-				} else {
-					return false
 				}
+				return false
 			}
 		case "OR":
 			fn = func(wires map[string]uint16) bool {
-				_, o_err := resolve(r["out"], wires)
-				if o_err == nil {
+				_, oErr := resolve(r["out"], wires)
+				if oErr == nil {
 					return false
 				}
-				p, p_err := resolve(r["a"], wires)
-				q, q_err := resolve(r["b"], wires)
-				if p_err == nil && q_err == nil {
+				p, pErr := resolve(r["a"], wires)
+				q, qErr := resolve(r["b"], wires)
+				if pErr == nil && qErr == nil {
 					res := p | q
 					wires[r["out"]] = res
 					return true
-				} else {
-					return false
 				}
+				return false
+
 			}
 		case "LSHIFT":
 			fn = func(wires map[string]uint16) bool {
-				_, o_err := resolve(r["out"], wires)
-				if o_err == nil {
+				_, oErr := resolve(r["out"], wires)
+				if oErr == nil {
 					return false
 				}
-				p, p_err := resolve(r["a"], wires)
-				q, q_err := resolve(r["b"], wires)
-				if p_err == nil && q_err == nil {
+				p, pErr := resolve(r["a"], wires)
+				q, qErr := resolve(r["b"], wires)
+				if pErr == nil && qErr == nil {
 					res := p << q
 					wires[r["out"]] = res
 					return true
-				} else {
-					return false
 				}
+				return false
 			}
 		case "RSHIFT":
 			fn = func(wires map[string]uint16) bool {
-				_, o_err := resolve(r["out"], wires)
-				if o_err == nil {
+				_, oErr := resolve(r["out"], wires)
+				if oErr == nil {
 					return false
 				}
-				p, p_err := resolve(r["a"], wires)
-				q, q_err := resolve(r["b"], wires)
-				if p_err == nil && q_err == nil {
+				p, pErr := resolve(r["a"], wires)
+				q, qErr := resolve(r["b"], wires)
+				if pErr == nil && qErr == nil {
 					res := p >> q
 					wires[r["out"]] = res
 					return true
-				} else {
-					return false
 				}
+				return false
 			}
 		case "NOT":
 			fn = func(wires map[string]uint16) bool {
-				_, o_err := resolve(r["out"], wires)
-				if o_err == nil {
+				_, oErr := resolve(r["out"], wires)
+				if oErr == nil {
 					return false
 				}
-				n, n_err := resolve(r["b"], wires)
-				if n_err == nil {
+				n, nErr := resolve(r["b"], wires)
+				if nErr == nil {
 					res := ^n
 					wires[r["out"]] = res
 					return true
-				} else {
-					return false
 				}
+				return false
 			}
 		default:
 			fn = func(wires map[string]uint16) bool {
-				_, o_err := resolve(r["out"], wires)
-				if o_err == nil {
+				_, oErr := resolve(r["out"], wires)
+				if oErr == nil {
 					return false
 				}
 
@@ -144,9 +140,8 @@ func day7sideA(lines []string) string {
 				if err == nil {
 					wires[r["out"]] = n
 					return true
-				} else {
-					return false
 				}
+				return false
 			}
 		}
 		graph = append(graph, fn)
@@ -198,87 +193,82 @@ func day7sideB(lines []string) string {
 		switch r["op"] {
 		case "AND":
 			fn = func(wires map[string]uint16) bool {
-				_, o_err := resolve(r["out"], wires)
-				if o_err == nil {
+				_, oErr := resolve(r["out"], wires)
+				if oErr == nil {
 					return false
 				}
-				p, p_err := resolve(r["a"], wires)
-				q, q_err := resolve(r["b"], wires)
-				if p_err == nil && q_err == nil {
+				p, pErr := resolve(r["a"], wires)
+				q, qErr := resolve(r["b"], wires)
+				if pErr == nil && qErr == nil {
 					res := p & q
 					wires[r["out"]] = res
 					return true
-				} else {
-					return false
 				}
+				return false
 			}
 		case "OR":
 			fn = func(wires map[string]uint16) bool {
-				_, o_err := resolve(r["out"], wires)
-				if o_err == nil {
+				_, oErr := resolve(r["out"], wires)
+				if oErr == nil {
 					return false
 				}
-				p, p_err := resolve(r["a"], wires)
-				q, q_err := resolve(r["b"], wires)
-				if p_err == nil && q_err == nil {
+				p, pErr := resolve(r["a"], wires)
+				q, qErr := resolve(r["b"], wires)
+				if pErr == nil && qErr == nil {
 					res := p | q
 					wires[r["out"]] = res
 					return true
-				} else {
-					return false
 				}
+				return false
 			}
 		case "LSHIFT":
 			fn = func(wires map[string]uint16) bool {
-				_, o_err := resolve(r["out"], wires)
-				if o_err == nil {
+				_, oErr := resolve(r["out"], wires)
+				if oErr == nil {
 					return false
 				}
-				p, p_err := resolve(r["a"], wires)
-				q, q_err := resolve(r["b"], wires)
-				if p_err == nil && q_err == nil {
+				p, pErr := resolve(r["a"], wires)
+				q, qErr := resolve(r["b"], wires)
+				if pErr == nil && qErr == nil {
 					res := p << q
 					wires[r["out"]] = res
 					return true
-				} else {
-					return false
 				}
+				return false
 			}
 		case "RSHIFT":
 			fn = func(wires map[string]uint16) bool {
-				_, o_err := resolve(r["out"], wires)
-				if o_err == nil {
+				_, oErr := resolve(r["out"], wires)
+				if oErr == nil {
 					return false
 				}
-				p, p_err := resolve(r["a"], wires)
-				q, q_err := resolve(r["b"], wires)
-				if p_err == nil && q_err == nil {
+				p, pErr := resolve(r["a"], wires)
+				q, qErr := resolve(r["b"], wires)
+				if pErr == nil && qErr == nil {
 					res := p >> q
 					wires[r["out"]] = res
 					return true
-				} else {
-					return false
 				}
+				return false
 			}
 		case "NOT":
 			fn = func(wires map[string]uint16) bool {
-				_, o_err := resolve(r["out"], wires)
-				if o_err == nil {
+				_, oErr := resolve(r["out"], wires)
+				if oErr == nil {
 					return false
 				}
-				n, n_err := resolve(r["b"], wires)
-				if n_err == nil {
+				n, nErr := resolve(r["b"], wires)
+				if nErr == nil {
 					res := ^n
 					wires[r["out"]] = res
 					return true
-				} else {
-					return false
 				}
+				return false
 			}
 		default:
 			fn = func(wires map[string]uint16) bool {
-				_, o_err := resolve(r["out"], wires)
-				if o_err == nil {
+				_, oErr := resolve(r["out"], wires)
+				if oErr == nil {
 					return false
 				}
 
@@ -286,9 +276,8 @@ func day7sideB(lines []string) string {
 				if err == nil {
 					wires[r["out"]] = n
 					return true
-				} else {
-					return false
 				}
+				return false
 			}
 		}
 		graph = append(graph, fn)

@@ -7,15 +7,15 @@ import (
 )
 
 func day8sideA(lines []string) string {
-	strip_unicode := regexp.MustCompile(`\\x[0-9a-fA-F][0-9a-fA-F]`)
-	strip_quot := regexp.MustCompile(`\\\"`)
-	strip_bw := regexp.MustCompile(`\\\\`)
+	stripUnicode := regexp.MustCompile(`\\x[0-9a-fA-F][0-9a-fA-F]`)
+	stripQuot := regexp.MustCompile(`\\\"`)
+	stripBw := regexp.MustCompile(`\\\\`)
 	count := 0
 	for _, line := range lines {
 		count = count + len(line)
-		line = strip_unicode.ReplaceAllString(line, "*")
-		line = strip_quot.ReplaceAllString(line, "\"")
-		line = strip_bw.ReplaceAllString(line, "\\")
+		line = stripUnicode.ReplaceAllString(line, "*")
+		line = stripQuot.ReplaceAllString(line, "\"")
+		line = stripBw.ReplaceAllString(line, "\\")
 		line = line[1 : len(line)-1]
 		count = count - len(line)
 	}

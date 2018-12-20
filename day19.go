@@ -9,37 +9,37 @@ import (
 	"github.com/texttheater/golang-levenshtein/levenshtein"
 )
 
-type Parser struct {
+type parser struct {
 	Rules  map[string][]string
 	Target string
 }
 
-type ParseResult struct {
+type parseResult struct {
 	Index int
 	Token string
 	To    []string
 }
 
-func (p *ParseResult) String() string {
+func (p *parseResult) String() string {
 	return "<{" + strconv.Itoa(p.Index) + "}: " + p.Token + " parses to: " + strings.Join(p.To, ",") + ">"
 }
 
-func NewParser(rules map[string][]string, target string) *Parser {
-	p := new(Parser)
+func newParser(rules map[string][]string, target string) *parser {
+	p := new(parser)
 	p.Rules = rules
 	p.Target = target
 	return p
 }
 
-func MakeParseResult(index int, token string, results []string) *ParseResult {
-	p := new(ParseResult)
+func makeParseResult(index int, token string, results []string) *parseResult {
+	p := new(parseResult)
 	p.Index = index
 	p.Token = token
 	p.To = results
 	return p
 }
 
-func (p *Parser) BestChunkedDistance(candidate string) int {
+func (p *parser) bestChunkedDistance(candidate string) int {
 	chunks := len(p.Target) / len(candidate) * 2
 	splitat := len(candidate) / 2
 	best := 9999999
@@ -53,8 +53,8 @@ func (p *Parser) BestChunkedDistance(candidate string) int {
 	return best
 }
 
-func (p *Parser) Parse(input string) <-chan *ParseResult {
-	ch := make(chan *ParseResult)
+func (p *parser) parse(input string) <-chan *parseResult {
+	ch := make(chan *parseResult)
 	length := len(input)
 	index := 0
 	go func() {
@@ -63,12 +63,12 @@ func (p *Parser) Parse(input string) <-chan *ParseResult {
 			if index < length-1 {
 				chew := input[index : index+2]
 				if val, ok := p.Rules[chew]; ok {
-					ch <- MakeParseResult(index, chew, val)
+					ch <- makeParseResult(index, chew, val)
 					index += 2
 				} else {
 					chew = input[index : index+1]
 					if val, ok := p.Rules[chew]; ok {
-						ch <- MakeParseResult(index, chew, val)
+						ch <- makeParseResult(index, chew, val)
 						index++
 					} else {
 						panic("parse error: invalid token " + chew + " at index " + strconv.Itoa(index))
@@ -78,7 +78,7 @@ func (p *Parser) Parse(input string) <-chan *ParseResult {
 				// we're on the last atom!
 				chew := input[index : index+1]
 				if val, ok := p.Rules[chew]; ok {
-					ch <- MakeParseResult(index, chew, val)
+					ch <- makeParseResult(index, chew, val)
 					index++
 				} else {
 					panic("parse error: invalid token " + chew + " at index " + strconv.Itoa(index))
@@ -90,7 +90,7 @@ func (p *Parser) Parse(input string) <-chan *ParseResult {
 	return ch
 }
 
-func ReplaceAt(index int, in string, tokenlength int, r string) string {
+func replaceAt(index int, in string, tokenlength int, r string) string {
 	p1 := in[0:index]
 	p2 := in[index+tokenlength : len(in)]
 	return strings.Join([]string{p1, r, p2}, "")
@@ -116,10 +116,10 @@ func day19sideA(lines []string) string {
 		}
 	}
 
-	parser := NewParser(rules, molecule)
+	parser := newParser(rules, molecule)
 
-	var parsed []*ParseResult
-	for parseResult := range parser.Parse(molecule) {
+	var parsed []*parseResult
+	for parseResult := range parser.parse(molecule) {
 		parsed = append(parsed, parseResult)
 	}
 
@@ -131,7 +131,7 @@ func day19sideA(lines []string) string {
 
 		for i := 0; i < len(r.To); i++ {
 			//molecules = append(molecules, ReplaceAt(r.Index, molecule, len(r.Token), r.To[i]))
-			candidate := ReplaceAt(r.Index, molecule, len(r.Token), r.To[i])
+			candidate := replaceAt(r.Index, molecule, len(r.Token), r.To[i])
 			//fmt.Println(candidate)
 			if _, seen := molecules[candidate]; !seen {
 				molecules[candidate] = 1
@@ -150,7 +150,7 @@ func day19sideA(lines []string) string {
 	return strconv.Itoa(len(molecules) - 1)
 }
 
-func Freeze(in []*ParseResult) (out string) {
+func freeze(in []*parseResult) (out string) {
 	// takes the token of every parse result and emits a string
 	for _, r := range in {
 		out += r.Token
@@ -158,7 +158,7 @@ func Freeze(in []*ParseResult) (out string) {
 	return out
 }
 
-func (p *Parser) VargHammer(in []*ParseResult, depth, depthLimit int) ([]*ParseResult, int) {
+func (p *parser) VargHammer(in []*parseResult, depth, depthLimit int) ([]*parseResult, int) {
 	// unless depthlimit has been exceeded or no valid parse results exist,
 	if depth == depthLimit {
 		//fmt.Println("depth limit reached, oh no")
@@ -166,7 +166,7 @@ func (p *Parser) VargHammer(in []*ParseResult, depth, depthLimit int) ([]*ParseR
 	}
 	//fmt.Println("===============================")
 	//fmt.Println("SMASH WIF HAMAR!", depth, depthLimit)
-	var valid []*ParseResult
+	var valid []*parseResult
 	for _, r := range in {
 		//fmt.Println("checking validity", r)
 		if len(r.To) > 1 {
@@ -186,16 +186,16 @@ func (p *Parser) VargHammer(in []*ParseResult, depth, depthLimit int) ([]*ParseR
 	choose := valid[choice]
 	target := choose.To[rand.Intn(len(choose.To))]
 	//fmt.Println("choosing token", choose.Token, "and result", target)
-	results := []*ParseResult{}
+	results := []*parseResult{}
 	// generate a new parse result from parsing that parse target
-	for parseResult := range p.Parse(target) {
+	for parseResult := range p.parse(target) {
 		//fmt.Println("that result parses to", parseResult)
 		results = append(results, parseResult) // think I need range for this because lolreasons
 	}
 	//in[choice] = nil // avoid horrible memory leak, lol :(
 	// replace results into in at position choice
 	for j := 0; j < len(results)-1; j++ {
-		in = append(in, new(ParseResult)) // append zero-value len(r)-1 times
+		in = append(in, new(parseResult)) // append zero-value len(r)-1 times
 	}
 	copy(in[choice+len(results)-1:], in[choice:]) // shift shit over len(r)-1 times
 	for j, x := range results {

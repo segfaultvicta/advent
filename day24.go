@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-func DecodeDay24(encoded int, mapping []int, magicFormatString string) []int {
+func decodeDay24(encoded int, mapping []int, magicFormatString string) []int {
 	bin := fmt.Sprintf(magicFormatString, encoded) // still too lazy to do bit shifting
 	var ret []int
 	for i := len(mapping) - 1; i >= 0; i-- {
@@ -51,7 +51,7 @@ func day24sideA(lines []string) string {
 		if subseti%100000 == 0 {
 			fmt.Println(bestLen, bestProd, subseti, len(valid), float64(subseti)/float64(cardinality))
 		}
-		subset := DecodeDay24(subseti, packages, "%028b")
+		subset := decodeDay24(subseti, packages, "%028b")
 		if len(subset) > bestLen {
 			continue
 		}
@@ -86,7 +86,7 @@ func day24sideA(lines []string) string {
 		remcardinality := int(math.Exp2(float64(len(remainder))))
 		found := false
 		for remsubseti := 0; (remsubseti < remcardinality) && !found; remsubseti++ {
-			remsubset := DecodeDay24(remsubseti, remainder, magic)
+			remsubset := decodeDay24(remsubseti, remainder, magic)
 			remsubsetsum := 0
 			for _, i := range remsubset {
 				remsubsetsum += i
@@ -172,7 +172,7 @@ func day24sideB(lines []string) string {
 		if subseti%100000 == 0 {
 			fmt.Println(bestLen, bestProd, subseti, len(valid), float64(subseti)/float64(cardinality))
 		}
-		subset := DecodeDay24(subseti, packages, "%028b")
+		subset := decodeDay24(subseti, packages, "%028b")
 		if len(subset) > bestLen {
 			continue
 		}
@@ -207,7 +207,7 @@ func day24sideB(lines []string) string {
 		remcardinality := int(math.Exp2(float64(len(remainder))))
 		found := false
 		for remsubseti := 0; (remsubseti < remcardinality) && !found; remsubseti++ {
-			remsubset := DecodeDay24(remsubseti, remainder, magic)
+			remsubset := decodeDay24(remsubseti, remainder, magic)
 			remsubsetsum := 0
 			for _, i := range remsubset {
 				remsubsetsum += i
@@ -241,7 +241,7 @@ func day24sideB(lines []string) string {
 			trunkcardinality := int(math.Exp2(float64(len(trunk))))
 			foundtrunk := false
 			for trunksubseti := 0; (trunksubseti < trunkcardinality) && !foundtrunk; trunksubseti++ {
-				trunksubset := DecodeDay24(trunksubseti, trunk, trunkmagic)
+				trunksubset := decodeDay24(trunksubseti, trunk, trunkmagic)
 				trunksubsetsum := 0
 				for _, i := range trunksubset {
 					trunksubsetsum += i

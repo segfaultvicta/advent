@@ -5,7 +5,7 @@ import (
 	"strconv"
 )
 
-func DeduplicateIntegerSlice(a []int) []int {
+func deduplicateIntegerSlice(a []int) []int {
 	res := []int{}
 	seen := map[int]int{}
 	for _, val := range a {
@@ -17,7 +17,7 @@ func DeduplicateIntegerSlice(a []int) []int {
 	return res
 }
 
-func FindDivisors(n int) []int {
+func findDivisors(n int) []int {
 	div := []int{}
 	for i := 1; i <= int(math.Sqrt(float64(n)))+1; i++ {
 		if n%i == 0 {
@@ -34,11 +34,11 @@ func FindDivisors(n int) []int {
 		div = append(div, v)
 	}
 
-	div = DeduplicateIntegerSlice(div)
+	div = deduplicateIntegerSlice(div)
 	return div
 }
 
-func FindLazyElfDivisors(n int) []int {
+func findLazyElfDivisors(n int) []int {
 	div := []int{}
 	for i := 1; i <= int(math.Sqrt(float64(n)))+1; i++ {
 		if n%i == 0 {
@@ -55,7 +55,7 @@ func FindLazyElfDivisors(n int) []int {
 		div = append(div, v)
 	}
 
-	div = DeduplicateIntegerSlice(div)
+	div = deduplicateIntegerSlice(div)
 	out := []int{}
 	for _, v := range div {
 		elfExhaustion := n / v
@@ -75,7 +75,7 @@ func day20sideA(lines []string) string {
 	foundAt := 0
 	for i := 1; found == false; i++ {
 		//fmt.Println("House", i)
-		div := FindDivisors(i)
+		div := findDivisors(i)
 		sum := 0
 		for _, d := range div {
 			sum += d * 10
@@ -98,7 +98,7 @@ func day20sideB(lines []string) string {
 	foundAt := 0
 	for i := 1; found == false; i++ {
 		//fmt.Println("House", i)
-		div := FindLazyElfDivisors(i)
+		div := findLazyElfDivisors(i)
 		sum := 0
 		for _, d := range div {
 			sum += d * 11

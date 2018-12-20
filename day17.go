@@ -9,7 +9,7 @@ import (
 // which we are trying to calculate, and a slice of integers containing the
 // actual container mapped to by each bit position in the encoded integer, and
 // returns the sum of container capacities encoded by the integer
-func DecodeAndSum(encoded int, mapping []int) int {
+func decodeAndSum(encoded int, mapping []int) int {
 
 	//fmt.Printf("% x\n", buffer.Bytes())
 	bin := fmt.Sprintf("%020b", encoded)
@@ -22,7 +22,7 @@ func DecodeAndSum(encoded int, mapping []int) int {
 	return sum
 }
 
-func Decode(encoded int, mapping []int) []int {
+func decode(encoded int, mapping []int) []int {
 	bin := fmt.Sprintf("%020b", encoded)
 	var ret []int
 	for i := 19; i >= 0; i-- {
@@ -44,7 +44,7 @@ func day17sideA(lines []string) string {
 	}
 
 	for i := 0; i < cardinality; i++ {
-		if DecodeAndSum(i, containers) == 150 {
+		if decodeAndSum(i, containers) == 150 {
 			count++
 		}
 	}
@@ -64,7 +64,7 @@ func day17sideB(lines []string) string {
 
 	var options []int
 	for i := 0; i < cardinality; i++ {
-		if DecodeAndSum(i, containers) == 150 {
+		if decodeAndSum(i, containers) == 150 {
 			options = append(options, i)
 		}
 	}
@@ -72,7 +72,7 @@ func day17sideB(lines []string) string {
 	best := 99999
 	var bestOptions []int
 	for i := 0; i < len(options); i++ {
-		min := len(Decode(options[i], containers))
+		min := len(decode(options[i], containers))
 		if min <= best {
 			best = min
 			bestOptions = append(bestOptions, options[i])
@@ -81,7 +81,7 @@ func day17sideB(lines []string) string {
 
 	fmt.Println(bestOptions)
 	for i := 0; i < len(bestOptions); i++ {
-		fmt.Println(Decode(bestOptions[i], containers))
+		fmt.Println(decode(bestOptions[i], containers))
 	}
 
 	return strconv.Itoa(count)

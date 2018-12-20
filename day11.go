@@ -41,7 +41,7 @@ func incrementPassword(password string, place int) string {
 		last = 97
 		ret = incrementPassword(ret, place-1)
 	} else {
-		last += 1
+		last++
 	}
 	ret += string(last)
 	return ret
@@ -57,7 +57,7 @@ func isValidPassword(password string) bool {
 
 	for i := 0; i < 7; i++ {
 		if password[i:i+1] == password[i+1:i+2] {
-			pairs += 1
+			pairs++
 			i++
 		}
 	}

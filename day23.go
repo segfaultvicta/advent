@@ -37,7 +37,7 @@ func day23sideA(lines []string) string {
 			if registers[register]%2 == 0 {
 				mc += offset
 			} else {
-				mc += 1
+				mc++
 			}
 		case op == "jio":
 			// jio r, offset is like jmp, but only jumps if register r is 1 ("jump if one", not odd).
@@ -46,23 +46,23 @@ func day23sideA(lines []string) string {
 			if registers[register] == 1 {
 				mc += offset
 			} else {
-				mc += 1
+				mc++
 			}
 		case op == "inc":
 			// inc r increments register r, adding 1 to it, then continues with the next instruction.
 			register := instruction[1]
-			registers[register] += 1
-			mc += 1
+			registers[register]++
+			mc++
 		case op == "tpl":
 			// tpl r sets register r to triple its current value, then continues with the next instruction.
 			register := instruction[1]
 			registers[register] *= 3
-			mc += 1
+			mc++
 		case op == "hlf":
 			// hlf r sets register r to half its current value, then continues with the next instruction.
 			register := instruction[1]
 			registers[register] /= 2
-			mc += 1
+			mc++
 		}
 	}
 

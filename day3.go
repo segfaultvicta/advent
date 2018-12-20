@@ -6,13 +6,13 @@ import (
 
 // ^>v< 94 62 118 60
 
-type Position struct {
+type position struct {
 	X int
 	Y int
 }
 
-func NewPosition(x int, y int) *Position {
-	var ret Position
+func newPosition(x int, y int) *position {
+	var ret position
 	ret.X = x
 	ret.Y = y
 	return &ret
@@ -20,14 +20,14 @@ func NewPosition(x int, y int) *Position {
 
 func day3sideA(lines []string) string {
 	line := lines[0]
-	var grid []Position
-	curr := NewPosition(0, 0)
+	var grid []position
+	curr := newPosition(0, 0)
 	grid = append(grid, *curr)
 	count := 1
 	for i := 0; i < len(line); i++ {
 		next := nextPosition(curr, line[i])
 		if !contains(grid, *next) {
-			count += 1
+			count++
 			grid = append(grid, *next)
 		}
 		curr = next
@@ -37,9 +37,9 @@ func day3sideA(lines []string) string {
 
 func day3sideB(lines []string) string {
 	line := lines[0]
-	var grid []Position
-	currSanta := NewPosition(0, 0)
-	currRobot := NewPosition(0, 0)
+	var grid []position
+	currSanta := newPosition(0, 0)
+	currRobot := newPosition(0, 0)
 	roboturn := false
 	grid = append(grid, *currSanta)
 	count := 1
@@ -48,7 +48,7 @@ func day3sideB(lines []string) string {
 			// robo-santa!
 			next := nextPosition(currRobot, line[i])
 			if !contains(grid, *next) {
-				count += 1
+				count++
 				grid = append(grid, *next)
 			}
 			roboturn = false
@@ -57,7 +57,7 @@ func day3sideB(lines []string) string {
 			// actual santa!
 			next := nextPosition(currSanta, line[i])
 			if !contains(grid, *next) {
-				count += 1
+				count++
 				grid = append(grid, *next)
 			}
 			roboturn = true
@@ -67,26 +67,26 @@ func day3sideB(lines []string) string {
 	return strconv.Itoa(count)
 }
 
-func nextPosition(curr *Position, char byte) *Position {
-	var next *Position
+func nextPosition(curr *position, char byte) *position {
+	var next *position
 	switch char {
 	case 94:
 		// up
-		next = NewPosition(curr.X, curr.Y+1)
+		next = newPosition(curr.X, curr.Y+1)
 	case 62:
 		// right
-		next = NewPosition(curr.X+1, curr.Y)
+		next = newPosition(curr.X+1, curr.Y)
 	case 118:
 		//down
-		next = NewPosition(curr.X, curr.Y-1)
+		next = newPosition(curr.X, curr.Y-1)
 	case 60:
 		//left
-		next = NewPosition(curr.X-1, curr.Y)
+		next = newPosition(curr.X-1, curr.Y)
 	}
 	return next
 }
 
-func contains(grid []Position, location Position) bool {
+func contains(grid []position, location position) bool {
 	for _, e := range grid {
 		if location == e {
 			return true

@@ -12,13 +12,14 @@ import (
 
 func main() {
 	var day, side, test string
+	// TODO rework all of this to take in a year and have a sane folder architecture
 	flag.StringVar(&day, "day", "1", "index of puzzle we're solving")
 	flag.StringVar(&side, "side", "A", "A for side A, B for side B")
 	flag.StringVar(&test, "test", "N", "Are we running test instead of input? Y/N")
 	flag.Parse()
-	side = strings.Trim(side, " ")
+	side = strings.ToUpper(strings.Trim(side, " "))
 	day = strings.Trim(day, " ")
-	test = strings.Trim(test, " ")
+	test = strings.ToUpper(strings.Trim(test, " "))
 
 	if test == "Y" {
 		s := []string{"day", day, ".test"}
@@ -32,8 +33,8 @@ func main() {
 		for _, e := range lines {
 			pieces := strings.Split(e, "ᛥ")
 			fmt.Println("Testing side", pieces[0], "of day", day, "with input", pieces[1])
-			split_by_newline := strings.Split(pieces[1], "\r\n")
-			result := calendar[day+pieces[0]](split_by_newline)
+			splitByNewline := strings.Split(pieces[1], "\r\n")
+			result := calendar[day+pieces[0]](splitByNewline)
 			if pieces[2] == result {
 				fmt.Println(".")
 			} else {

@@ -9,18 +9,18 @@ import (
 	"github.com/fighterlyt/permutation"
 )
 
-func NewPerson(name string) *Person {
+func newPerson(name string) *person {
 	var opinions map[string]int
 	opinions = make(map[string]int)
-	return &Person{name, opinions}
+	return &person{name, opinions}
 }
 
-type Person struct {
+type person struct {
 	Name     string
 	Opinions map[string]int
 }
 
-func (p *Person) String() string {
+func (p *person) String() string {
 	var buffer bytes.Buffer
 	buffer.WriteString("\n" + p.Name + " has the following opinions:\n")
 	for name, opinion := range p.Opinions {
@@ -29,20 +29,20 @@ func (p *Person) String() string {
 	return buffer.String()
 }
 
-func (p *Person) setOpinionAbout(name string, to int) {
+func (p *person) setOpinionAbout(name string, to int) {
 	p.Opinions[name] = to
 }
 
-func selectPerson(person string, list []*Person) *Person {
+func selectPerson(selectedPerson string, list []*person) *person {
 	for _, e := range list {
-		if e.Name == person {
+		if e.Name == selectedPerson {
 			return e
 		}
 	}
 	return nil
 }
 
-func calculateHappiness(arrangement []*Person) (happiness int) {
+func calculateHappiness(arrangement []*person) (happiness int) {
 	for i, p := range arrangement {
 		switch {
 		case i == 0:
@@ -58,7 +58,7 @@ func calculateHappiness(arrangement []*Person) (happiness int) {
 
 func day13sideA(lines []string) string {
 	re := regexp.MustCompile("([A-Za-z]+) would (gain|lose) ([0-9]+) happiness units by sitting next to ([A-Za-z]+).")
-	var guestList = []*Person{NewPerson("Alice"), NewPerson("Bob"), NewPerson("Carol"), NewPerson("David"), NewPerson("Eric"), NewPerson("Frank"), NewPerson("George"), NewPerson("Mallory")}
+	var guestList = []*person{newPerson("Alice"), newPerson("Bob"), newPerson("Carol"), newPerson("David"), newPerson("Eric"), newPerson("Frank"), newPerson("George"), newPerson("Mallory")}
 	for _, line := range lines {
 		pieces := re.FindStringSubmatch(line)
 		a := pieces[1]
@@ -72,16 +72,16 @@ func day13sideA(lines []string) string {
 	}
 
 	less := func(i, j interface{}) bool {
-		p := i.(*Person)
-		q := j.(*Person)
+		p := i.(*person)
+		q := j.(*person)
 		return p.Name < q.Name
 	}
 	permuter, _ := permutation.NewPerm(guestList, less)
-	var permutations [][]*Person
+	var permutations [][]*person
 
 	for i, err := permuter.Next(); err == nil; i, err = permuter.Next() {
 		//fmt.Printf("%3d permutation: %v, %d left\n", permuter.Index()-1, i.([]*Person), permuter.Left())
-		permutations = append(permutations, i.([]*Person))
+		permutations = append(permutations, i.([]*person))
 	}
 
 	best := 0
@@ -95,7 +95,7 @@ func day13sideA(lines []string) string {
 
 func day13sideB(lines []string) string {
 	re := regexp.MustCompile("([A-Za-z]+) would (gain|lose) ([0-9]+) happiness units by sitting next to ([A-Za-z]+).")
-	var guestList = []*Person{NewPerson("Alice"), NewPerson("Bob"), NewPerson("Carol"), NewPerson("David"), NewPerson("Eric"), NewPerson("Frank"), NewPerson("George"), NewPerson("Mallory"), NewPerson("Sadsack")}
+	var guestList = []*person{newPerson("Alice"), newPerson("Bob"), newPerson("Carol"), newPerson("David"), newPerson("Eric"), newPerson("Frank"), newPerson("George"), newPerson("Mallory"), newPerson("Sadsack")}
 	for _, line := range lines {
 		pieces := re.FindStringSubmatch(line)
 		a := pieces[1]
@@ -115,16 +115,16 @@ func day13sideB(lines []string) string {
 	fmt.Println(guestList)
 
 	less := func(i, j interface{}) bool {
-		p := i.(*Person)
-		q := j.(*Person)
+		p := i.(*person)
+		q := j.(*person)
 		return p.Name < q.Name
 	}
 	permuter, _ := permutation.NewPerm(guestList, less)
-	var permutations [][]*Person
+	var permutations [][]*person
 
 	for i, err := permuter.Next(); err == nil; i, err = permuter.Next() {
 		//fmt.Printf("%3d permutation: %v, %d left\n", permuter.Index()-1, i.([]*Person), permuter.Left())
-		permutations = append(permutations, i.([]*Person))
+		permutations = append(permutations, i.([]*person))
 	}
 
 	best := 0

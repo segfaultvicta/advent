@@ -6,12 +6,12 @@ import (
 	"strings"
 )
 
-type Node struct {
+type node struct {
 	Name  string
 	Paths map[string]int
 }
 
-func makePath(nodes map[string]Node, from string, to string, dist int) {
+func makePath(nodes map[string]node, from string, to string, dist int) {
 	fromNode, fromExists := nodes[from]
 	if fromExists {
 		_, toExists := fromNode.Paths[to]
@@ -21,14 +21,14 @@ func makePath(nodes map[string]Node, from string, to string, dist int) {
 	} else {
 		empty := make(map[string]int)
 		empty[to] = dist
-		nodes[from] = Node{Name: from, Paths: empty}
+		nodes[from] = node{Name: from, Paths: empty}
 	}
 }
 
 // I don't actually know why this is a random walk, rather than a traversal.
 // If you do know what I'm doing wrong - it might be a logic issue, or it
 // might be not understanding Go properly - please let me know, I'm SUPER curious.
-func (n Node) mysteriousRandomWalk(remaining map[string]Node, shortest bool) (distance int, path string) {
+func (n node) mysteriousRandomWalk(remaining map[string]node, shortest bool) (distance int, path string) {
 	//scan := bufio.NewReader(os.Stdin)
 	//scan.ReadString('\n')
 	newRemaining := cut(n.Name, remaining)
@@ -83,8 +83,8 @@ func (n Node) mysteriousRandomWalk(remaining map[string]Node, shortest bool) (di
 }
 
 func day9sideA(lines []string) string {
-	var nodes map[string]Node
-	nodes = make(map[string]Node)
+	var nodes map[string]node
+	nodes = make(map[string]node)
 
 	for _, line := range lines {
 		split := strings.Split(line, " ")
@@ -121,8 +121,8 @@ func day9sideA(lines []string) string {
 	return strconv.Itoa(shortestPaths[0])
 }
 
-func cut(nodeName string, nodes map[string]Node) map[string]Node {
-	temp := make(map[string]Node)
+func cut(nodeName string, nodes map[string]node) map[string]node {
+	temp := make(map[string]node)
 	for _, node := range nodes {
 		if node.Name != nodeName {
 			temp[node.Name] = node
@@ -132,8 +132,8 @@ func cut(nodeName string, nodes map[string]Node) map[string]Node {
 }
 
 func day9sideB(lines []string) string {
-	var nodes map[string]Node
-	nodes = make(map[string]Node)
+	var nodes map[string]node
+	nodes = make(map[string]node)
 
 	for _, line := range lines {
 		split := strings.Split(line, " ")

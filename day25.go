@@ -17,7 +17,7 @@ func day25sideA(lines []string) string {
 		y = y + yIncrement
 
 		//fmt.Printf("% 4d ", i, y)
-		yIncrement += 1
+		yIncrement++
 
 		xIncrement := 1 + yIncrement
 		x := y
@@ -27,7 +27,7 @@ func day25sideA(lines []string) string {
 			if i == row && j == column {
 				nthnumber = x
 			}
-			xIncrement += 1
+			xIncrement++
 		}
 	}
 

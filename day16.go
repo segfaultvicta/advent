@@ -10,14 +10,14 @@ func day16sideA(lines []string) string {
 	return "n/i"
 }
 
-type Sue struct {
-	num        int
-	first      string
-	num_first  int
-	second     string
-	num_second int
-	third      string
-	num_third  int
+type sue struct {
+	num       int
+	first     string
+	numFirst  int
+	second    string
+	numSecond int
+	third     string
+	numThird  int
 }
 
 func day16sideB(lines []string) string {
