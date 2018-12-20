@@ -4,114 +4,68 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/segfaultvicta/advent/pkg/eighteen"
+	"github.com/segfaultvicta/advent/pkg/fifteen"
+	"github.com/segfaultvicta/advent/pkg/seventeen"
+	"github.com/segfaultvicta/advent/pkg/sixteen"
 )
 
 func main() {
-	var day, side, test string
-	// TODO rework all of this to take in a year and have a sane folder architecture
+	var day, side, year, infile, instring string
+	var lines []string
+
 	flag.StringVar(&day, "day", "1", "index of puzzle we're solving")
+	flag.StringVar(&year, "year", "2015", "the year the puzzle belongs to")
 	flag.StringVar(&side, "side", "A", "A for side A, B for side B")
-	flag.StringVar(&test, "test", "N", "Are we running test instead of input? Y/N")
+	flag.StringVar(&infile, "file", "", "input file to use other than the default")
+	flag.StringVar(&instring, "in", "", "input to give to the puzzle, lines seperated by ';'")
 	flag.Parse()
 	side = strings.ToUpper(strings.Trim(side, " "))
 	day = strings.Trim(day, " ")
-	test = strings.ToUpper(strings.Trim(test, " "))
+	year = strings.Trim(year, " ")
+	infile = strings.Trim(infile, " ")
 
-	if test == "Y" {
-		s := []string{"day", day, ".test"}
-		infile := strings.Join(s, "")
-
-		b, _ := ioutil.ReadFile(infile)
-		contents := string(b)
-
-		lines := strings.Split(contents, "ᚼ")
-
-		for _, e := range lines {
-			pieces := strings.Split(e, "ᛥ")
-			fmt.Println("Testing side", pieces[0], "of day", day, "with input", pieces[1])
-			splitByNewline := strings.Split(pieces[1], "\r\n")
-			result := calendar[day+pieces[0]](splitByNewline)
-			if pieces[2] == result {
-				fmt.Println(".")
-			} else {
-				fmt.Println("Expected", pieces[2], "but got", result)
-			}
-		}
+	if instring != "" {
+		lines = strings.Split(instring, ";")
 	} else {
-		s := []string{"day", day, ".input"}
-		infile := strings.Join(s, "")
+		s := []string{"input/", year, "/", day}
+
+		if infile == "" {
+			infile = strings.Join(s, "")
+		}
 
 		file, err := os.Open(infile)
-		if err != nil {
-			log.Fatal(err)
+		if err == nil {
+			scanner := bufio.NewScanner(file)
+			for scanner.Scan() {
+				lines = append(lines, scanner.Text())
+			}
+
+			if err := scanner.Err(); err != nil {
+				log.Fatal(err)
+			}
 		}
 		defer file.Close()
-
-		var lines []string
-		scanner := bufio.NewScanner(file)
-		for scanner.Scan() {
-			lines = append(lines, scanner.Text())
-		}
-
-		if err := scanner.Err(); err != nil {
-			log.Fatal(err)
-		}
-
-		fmt.Println(calendar[day+side](lines))
 	}
+
+	fmt.Println(dispatch(year, day, side, lines))
 }
 
-var calendar = map[string]func([]string) string{
-	"1A":  day1sideA,
-	"1B":  day1sideB,
-	"2A":  day2sideA,
-	"2B":  day2sideB,
-	"3A":  day3sideA,
-	"3B":  day3sideB,
-	"4A":  day4sideA,
-	"4B":  day4sideB,
-	"5A":  day5sideA,
-	"5B":  day5sideB,
-	"6A":  day6sideA,
-	"6B":  day6sideB,
-	"7A":  day7sideA,
-	"7B":  day7sideB,
-	"8A":  day8sideA,
-	"8B":  day8sideB,
-	"9A":  day9sideA,
-	"9B":  day9sideB,
-	"11A": day11sideA,
-	"11B": day11sideB,
-	"12A": day12sideA,
-	"12B": day12sideB,
-	"13A": day13sideA,
-	"13B": day13sideB,
-	"14A": day14sideA,
-	"14B": day14sideB,
-	"15A": day15sideA,
-	"15B": day15sideB,
-	"16A": day16sideA,
-	"16B": day16sideB,
-	"17A": day17sideA,
-	"17B": day17sideB,
-	"18A": day18sideA,
-	"18B": day18sideB,
-	"19A": day19sideA,
-	"19B": day19sideB,
-	"20A": day20sideA,
-	"20B": day20sideB,
-	"21A": day21sideA,
-	"21B": day21sideB,
-	"22A": day22sideA,
-	"22B": day22sideB,
-	"23A": day23sideA,
-	"23B": day23sideB,
-	"24A": day24sideA,
-	"24B": day24sideB,
-	"25A": day25sideA,
-	"25B": day25sideB,
+func dispatch(year string, day string, side string, lines []string) string {
+	switch year {
+	case "2015":
+		return fifteen.Dispatch(day, side, lines)
+	case "2016":
+		return sixteen.Dispatch(day, side, lines)
+	case "2017":
+		return seventeen.Dispatch(day, side, lines)
+	case "2018":
+		return eighteen.Dispatch(day, side, lines)
+	default:
+		return "invalid year"
+	}
 }
